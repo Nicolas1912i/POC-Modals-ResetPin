@@ -9,10 +9,10 @@ import {ResetPinStages} from "../../../enums/reset-pin-stages";
 })
 export class EmailComponent {
   @Input() callbackMethod: any;
-  @Output() eventEmitter = new EventEmitter<ResetPinStages>();
 
-  emitValue(value: ResetPinStages) {
-    this.eventEmitter.emit(value);
+  handleInternalClick(value: ResetPinStages) {
+    console.log(`Emitting ${value} from email component`);
+    this.callbackMethod(value);
   }
 
   protected readonly ResetPinStages = ResetPinStages;

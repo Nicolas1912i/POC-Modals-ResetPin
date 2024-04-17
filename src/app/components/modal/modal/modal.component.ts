@@ -17,12 +17,7 @@ import {ResetPinStages} from "../../../enums/reset-pin-stages";
 })
 export class ModalComponent {
   @Input() actualStep: any;
-  @Output() eventEmitter = new EventEmitter<ResetPinStages>();
-
-  actualStepUpdate(value: ResetPinStages) {
-    console.log('Passing to: ' + value);
-    this.eventEmitter.emit(value);
-  }
+  @Input() callbackMethod: any;
 
   protected readonly ResetPinStages = ResetPinStages;
 }

@@ -3,6 +3,6 @@
     Olvide mi Número o PIN de AV credits
   </button>
 
-  <app-modal [actualStep]="actualComponent" (eventEmitter)="actualStepUpdate($event)" *ngIf="flagTriggered"></app-modal>
+  <app-modal [actualStep]="actualComponent" [callbackMethod]="actualStepUpdate" *ngIf="flagTriggered"></app-modal>
 
 </ng-container>

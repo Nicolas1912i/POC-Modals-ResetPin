@@ -1,7 +1,5 @@
-import {EventEmitter, AfterContentInit, AfterViewInit, Component, ComponentFactoryResolver, OnInit, Output, ViewChild, ViewContainerRef} from '@angular/core';
-import {ManagerStepService} from "./services/manager-step.service";
-import {ResetPinStages} from "./enums/reset-pin-stages";
-import {EmailComponent} from "./components/email/email/email.component";
+import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ManagerStepService} from './services/manager-step.service';
 import { ModalCommunicationService } from './services/modal-communication.service';
 
 @Component({
@@ -10,41 +8,40 @@ import { ModalCommunicationService } from './services/modal-communication.servic
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild("componentWrapper", { read: ViewContainerRef }) componentContainer: ViewContainerRef;
-
   constructor(private managerStepService: ManagerStepService,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private communicationService: ModalCommunicationService
-  ) {}
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private communicationService: ModalCommunicationService) {}
+
+  @ViewChild('componentWrapper', { read: ViewContainerRef }) componentContainer: ViewContainerRef;
 
   ngOnInit(): void {
     this.initSubscription();
   }
 
-  ngAfterViewInit(): void {
-    this.renderComponent(EmailComponent);
-  }
-
-  handleClick(): void {
-    this.managerStepService.next();
-    const component = this.managerStepService.currentState;
-    console.log("Current component", component);
-    this.renderComponent(component);
-  }
-
   private initSubscription(): void {
     this.communicationService.subscription.subscribe(x => {
-      console.log("initSubscription", x);
-      this.handleClick();
+      console.log('initSubscription', x);
+      this.renderNextStep();
     });
   }
 
-  private renderComponent(componentClazz: any) {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(componentClazz);
+  startModalsFlow(): void {
+    const component = this.managerStepService.startState;
+    console.log('Current component is: ', component);
+    this.renderComponent(component);
+  }
+
+  private renderNextStep() {
+    this.managerStepService.next();
+    const component = this.managerStepService.currentState;
+    console.log('Current component', component);
+    this.renderComponent(component);
+  }
+
+  private renderComponent(componentClass: any) {
+    const factory = this.componentFactoryResolver.resolveComponentFactory(componentClass);
     const componentWrapperRef = factory.create(this.componentContainer.injector);
     this.componentContainer.clear();
     this.componentContainer.insert(componentWrapperRef.hostView);
   }
-
-  protected readonly ResetPinStages = ResetPinStages;
 }

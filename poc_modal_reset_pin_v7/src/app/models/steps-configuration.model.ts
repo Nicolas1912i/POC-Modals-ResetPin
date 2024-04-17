@@ -1,4 +1,4 @@
-import {ResetPinStages} from "../enums/reset-pin-stages";
+import {ResetPinStages} from '../enums/reset-pin-stages';
 
 export interface StepsConfigurationModel {
   name: ResetPinStages;

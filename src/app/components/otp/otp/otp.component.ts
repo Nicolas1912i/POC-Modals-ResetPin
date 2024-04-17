@@ -8,11 +8,6 @@ import {ResetPinStages} from "../../../enums/reset-pin-stages";
   templateUrl: './otp.component.html',
 })
 export class OtpComponent {
-  @Output() eventEmitter = new EventEmitter<ResetPinStages>();
-
-  emitValue(value: ResetPinStages) {
-    this.eventEmitter.emit(value);
-  }
-
+  @Input() callbackMethod: any;
   protected readonly ResetPinStages = ResetPinStages;
 }

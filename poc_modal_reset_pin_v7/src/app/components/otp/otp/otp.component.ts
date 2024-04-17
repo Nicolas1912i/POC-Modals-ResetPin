@@ -1,27 +1,63 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ResetPinStages} from "../../../enums/reset-pin-stages";
-import { BehaviorSubject } from 'rxjs';
-import { ModalCommunicationService } from 'src/app/services/modal-communication.service';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ModalCommunicationService} from 'src/app/services/modal-communication.service';
 
 @Component({
-  selector: 'app-otp',
-  templateUrl: './otp.component.html',
+    selector: 'app-otp',
+    templateUrl: './otp.component.html',
 })
-export class OtpComponent {
-  constructor(public communicationService: ModalCommunicationService) {}
+export class OtpComponent implements OnInit {
 
-  verifyOtp() {
-    // Usar formbuilder para el comportamiento del formulario
-    // validateForm()
-    // joinOtpCode()
-    // sendRequestApi()
-    // handleResponse()
-    this.emitResult();
-  }
+    @ViewChild('inputs') inputsElement: ElementRef;
 
-  emitResult() {
-    this.communicationService.notify("finish");
-  }
+    private inputsValues = ['', '', '', '', '', ''];
+    private finalOtpCode: string;
 
-  protected readonly ResetPinStages = ResetPinStages;
+    constructor(public communicationService: ModalCommunicationService) {
+    }
+
+    verifyOtp() {
+        // Usar formbuilder para el comportamiento del formulario
+        // validateForm()
+        this.joinOtpCode();
+        // sendRequestApi()
+        // handleResponse()
+        this.emitResult();
+
+    }
+
+    searchNext(changingNumber: number) {
+
+        if (this.inputsValues[changingNumber] && !this.inputsElement.nativeElement.childNodes[changingNumber].value) {
+            const deleteIndex = this.inputsValues.filter(x => x !== '').length - 1;
+            this.inputsValues[deleteIndex] = '';
+            this.inputsElement.nativeElement.childNodes[changingNumber].value = this.inputsValues[changingNumber];
+            this.inputsElement.nativeElement.childNodes[deleteIndex].value = '';
+            this.inputsElement.nativeElement.childNodes[deleteIndex - 1].focus();
+
+            return;
+        }
+
+        this.inputsValues[changingNumber] = this.inputsElement.nativeElement.childNodes[changingNumber].value;
+        this.inputsElement.nativeElement.childNodes[changingNumber + 1].focus();
+    }
+
+    joinOtpCode() {
+        this.finalOtpCode = this.inputsValues.join();
+        console.log(this.finalOtpCode);
+    }
+
+    ngOnInit() {
+        this.inputsElement.nativeElement.childNodes[0].focus();
+
+        // this.inputsElement.nativeElement.addEventListener('keydown', (event) => {
+        //     const key = event.key;
+        //     while (key === 'Backspace' || key === 'Delete') {
+        //       console.log("You tried to delete stuff");
+        //     }
+        // });
+    }
+
+    emitResult() {
+        this.communicationService.notify('finish');
+    }
 }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {ResetPinStages} from "../enums/reset-pin-stages";
-import {StepsConfigurationModel} from "../models/steps-configuration.model";
-import StepsConfiguration from "../configs/stepsConfiguration";
+import {ResetPinStages} from '../enums/reset-pin-stages';
+import {StepsConfigurationModel} from '../models/steps-configuration.model';
+import StepsConfiguration from '../configs/stepsConfiguration';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class ManagerStepService {
     this._stepsConfiguration = StepsConfiguration.configuration;
     this._startState = this._stepsConfiguration[0];
     this._currentState = this._stepsConfiguration[0];
-    this._endState = this._stepsConfiguration[this._stepsConfiguration.length-1];
+    this._endState = this._stepsConfiguration[this._stepsConfiguration.length - 1];
   }
 
   public next(): void {

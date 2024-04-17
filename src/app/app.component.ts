@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ComponentFactoryResolver, ComponentRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ManagerStepService} from "./services/manager-step.service";
 import {ResetPinStages} from "./enums/reset-pin-stages";
@@ -14,7 +14,6 @@ import {ModalComponent} from "./components/modal/modal/modal.component";
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-
   public actualStep: ResetPinStages | undefined = ResetPinStages.Email;
   public flagTriggered: boolean = false;
   public actualComponent: any;
@@ -25,7 +24,6 @@ export class AppComponent {
 
   handleClick() {
     this.controlNextStep();
-
     this.flagTriggered = true;
   }
 

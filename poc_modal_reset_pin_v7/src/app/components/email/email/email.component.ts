@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ResetPinStages} from "../../../enums/reset-pin-stages";
+import {Component} from '@angular/core';
 import { ModalCommunicationService } from 'src/app/services/modal-communication.service';
 
 @Component({
@@ -19,7 +18,6 @@ export class EmailComponent {
   }
 
   emitResult() {
-    this.communicationService.notify("finish");
+    this.communicationService.notify('finish');
   }
-  protected readonly ResetPinStages = ResetPinStages;
 }
