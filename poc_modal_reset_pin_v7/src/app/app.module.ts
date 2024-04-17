@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ManagerStepService } from './services/manager-step.service';
 import { ModalCommunicationService } from './services/modal-communication.service';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import {FormsModule} from '@angular/forms';
     OtpComponent,
     ConfirmationComponent,
   ],
-  imports: [BrowserModule, FormsModule],
+    imports: [BrowserModule, FormsModule, ReactiveFormsModule],
   providers: [ManagerStepService, ModalCommunicationService],
   bootstrap: [AppComponent],
   entryComponents: [AppComponent, EmailComponent, OtpComponent, ConfirmationComponent]
