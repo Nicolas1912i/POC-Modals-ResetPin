@@ -9,102 +9,21 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 export class OtpComponent implements OnInit {
 
   @ViewChild('inputs') inputsElement: ElementRef;
+  public otpFormGroup: FormGroup;
 
-  // const input = {
-  //   id: 1,
-  //   value: '',
-  //   focus: false
-  // };
-
-  public inputForms: FormGroup;
-
-  get otpGroup() {
-    return this.inputForms.get('otpGroup') as FormArray;
-  }
-
-  // public inputsList = [
-  //   {
-  //     id: 1,
-  //     value: '',
-  //     focus: true
-  //   },
-  //   {
-  //     id: 2,
-  //     value: '',
-  //     focus: false
-  //   },
-  //   {
-  //     id: 3,
-  //     value: '',
-  //     focus: false
-  //   },
-  //   {
-  //     id: 4,
-  //     value: '',
-  //     focus: false
-  //   },
-  //   {
-  //     id: 5,
-  //     value: '',
-  //     focus: false
-  //   },
-  //   {
-  //     id: 6,
-  //     value: '',
-  //     focus: false
-  //   }
-  // ];
-
-
-
-  private inputsValues = ['', '', '', '', '', ''];
-  private finalOtpCode: string;
+  get otpGroup() { return this.otpFormGroup.get('otpGroup') as FormArray; }
 
   constructor(public communicationService: ModalCommunicationService, public formBuilder: FormBuilder) {}
 
-  // @HostListener('keydown', ['$event.key'])
-  // onDeleteDetected(keyDown) {
-  //   if (keyDown === 'Backspace' || keyDown === 'Delete') {
-  //     this.deleteOtp();
-  //   }
-  // }
-
-  verifyOtp() {
-    // Usar formbuilder para el comportamiento del formulario
-    // validateForm()
-    this.joinOtpCode();
-    // sendRequestApi()
-    // handleResponse()
-    this.emitResult();
-  }
-
-  searchNext(changingNumber: number): void {
-    this.inputsValues[changingNumber] = this.inputsElement.nativeElement.childNodes[changingNumber].value;
-
-    if (changingNumber < 5) {
-      this.inputsElement.nativeElement.childNodes[changingNumber + 1].focus();
+  @HostListener('keydown', ['$event.key'])
+  onDeleteDetected(keyDown: string): void {
+    if (keyDown === 'Backspace' || keyDown === 'Delete') {
+      this.deleteOtp();
     }
-  }
-
-
-  private deleteOtp(): void {
-    const deleteIndex = this.inputsValues.filter(x => x !== '').length - 1;
-    this.inputsValues[deleteIndex] = '';
-    this.inputsElement.nativeElement.childNodes[deleteIndex].value = '';
-
-    if (deleteIndex >= 1) {
-      this.inputsElement.nativeElement.childNodes[deleteIndex].focus();
-    }
-  }
-
-  joinOtpCode(): void {
-    this.finalOtpCode = this.inputsValues.join();
-    console.log(this.finalOtpCode);
   }
 
   ngOnInit(): void {
-    // this.inputsElement.nativeElement.childNodes[0].focus();
-    this.inputForms = this.formBuilder.group(
+    this.otpFormGroup = this.formBuilder.group(
       {
         otpGroup: this.formBuilder.array([
           this.formBuilder.control(''),
@@ -117,7 +36,26 @@ export class OtpComponent implements OnInit {
     );
   }
 
-  emitResult(): void {
+  public verifyOtp(): void {
+    this.emitResult();
+  }
+
+  public focusNextInput(activeInput: number): void {
+    if (activeInput !== 5) {
+      document.getElementById((activeInput + 1).toString()).focus();
+    }
+  }
+
+  private deleteOtp(): void {
+    const deleteIndex = this.otpGroup.controls.filter(x => x.value !== '').length - 1;
+    if (deleteIndex >= 0) {
+      this.otpGroup.controls[deleteIndex].setValue('');
+
+      document.getElementById((deleteIndex).toString()).focus();
+    }
+  }
+
+  private emitResult(): void {
     this.communicationService.notify('finish');
   }
 }

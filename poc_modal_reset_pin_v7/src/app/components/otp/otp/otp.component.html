@@ -2,7 +2,8 @@
   <h1>otp works!</h1>
 
   <div *ngFor="let control of otpGroup.controls; let controlIndex = index" [formGroup]="otpGroup" >
-    <input type="text" [formControlName]="controlIndex" /> {{control.value}} {{controlIndex}}
+    <input type="text" [maxLength]="1" [id]="controlIndex" [required]="true"
+           [formControlName]="controlIndex.toString()" (input)="focusNextInput(controlIndex)" />
   </div>
 
   <button (click)="verifyOtp()">
