@@ -106,7 +106,13 @@ export class OtpComponent implements OnInit {
     // this.inputsElement.nativeElement.childNodes[0].focus();
     this.inputForms = this.formBuilder.group(
       {
-        otpGroup: this.formBuilder.array( ['', '', '', '', '', ''])
+        otpGroup: this.formBuilder.array([
+          this.formBuilder.control(''),
+          this.formBuilder.control(''),
+          this.formBuilder.control(''),
+          this.formBuilder.control(''),
+          this.formBuilder.control(''),
+          this.formBuilder.control('')])
       }
     );
   }
@@ -114,10 +120,4 @@ export class OtpComponent implements OnInit {
   emitResult(): void {
     this.communicationService.notify('finish');
   }
-}
-
-class FormComponent {
-  otpGrouo = new FormGroup({
-    otp
-  })
 }
